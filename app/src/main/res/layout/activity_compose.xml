@@ -38,6 +38,6 @@
         android:layout_below="@+id/etTweet"
         android:layout_marginTop="3dp"
         android:maxLength="140"
-        android:text="TextView" />
+        android:text="140" />
 
 </RelativeLayout>
