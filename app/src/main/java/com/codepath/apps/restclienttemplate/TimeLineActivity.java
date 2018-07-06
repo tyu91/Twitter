@@ -24,7 +24,10 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimeLineActivity extends AppCompatActivity {
 
-    private final int REQUEST_CODE = 1;
+    private final int REQUESTCODE_COMPOSE = 1;
+    private final int REQUESTCODE_COMMENT = 2;
+//    private final int REQUESTCODE_DETAILS = 3;
+
 
     TwitterClient client;
     TweetAdapter tweetAdapter;
@@ -32,17 +35,25 @@ public class TimeLineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     private SwipeRefreshLayout swipeContainer;
 
+    //when hit the comment thing, do this
     public void onComposeAction(MenuItem mi) {
         //create intent for new activity
         Intent intent = new Intent(this, ComposeActivity.class);
         //show the activity
-        this.startActivityForResult(intent, REQUEST_CODE);
+        this.startActivityForResult(intent, REQUESTCODE_COMPOSE);
+    }
+
+    public void onDetailsAction(MenuItem mi) {
+        //create intent for new activity
+        Intent intent = new Intent(this, TweetDetailsActivities.class);
+        //show the activity
+        this.startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && (requestCode == REQUESTCODE_COMPOSE || requestCode == REQUESTCODE_COMMENT)) {
             // Extract name value from result extras
             Tweet tweet = Parcels.unwrap(intent.getParcelableExtra("etTweet"));
             tweets.add(0, tweet);
@@ -137,8 +148,6 @@ public class TimeLineActivity extends AppCompatActivity {
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
             }
-
-            //TODO: this is the issue!
 
             @Override
             public void onFailure ( int statusCode, Header[] headers, String

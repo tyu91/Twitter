@@ -23,7 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="57dp"
-        android:text="TextView" />
+        android:text="User" />
 
     <TextView
         android:id="@+id/tvBody"
@@ -32,7 +32,7 @@
         android:layout_below="@+id/tvUserName"
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView" />
+        android:text="Text Body" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -41,7 +41,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/tvUserName"
-        android:text="TextView" />
+        android:text="Time Stamp" />
 
     <ImageButton
         android:id="@+id/ibComment"
@@ -50,4 +50,21 @@
         android:layout_below="@+id/tvBody"
         android:layout_toEndOf="@+id/ivProfileImage"
         app:srcCompat="@android:drawable/sym_action_chat" />
+
+    <ImageButton
+        android:id="@+id/ibRT"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginEnd="151dp"
+        android:src="@android:drawable/stat_notify_sync" />
+
+    <ImageButton
+        android:id="@+id/ibLike"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvBody"
+        android:src="@android:drawable/btn_star" />
 </RelativeLayout>

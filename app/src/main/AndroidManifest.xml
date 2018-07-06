@@ -33,9 +33,10 @@
                     android:scheme="@string/intent_scheme" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".Tweet" />-->
+        <!-- <activity android:name=".Tweet" /> -->
         <activity android:name=".TimeLineActivity" />
-        <activity android:name=".ComposeActivity"></activity>
+        <activity android:name=".ComposeActivity" />
+        <activity android:name=".TweetDetailsActivities" />
     </application>
 
 </manifest>

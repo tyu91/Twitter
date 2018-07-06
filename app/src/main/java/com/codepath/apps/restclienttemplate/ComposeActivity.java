@@ -36,36 +36,66 @@ public class ComposeActivity extends AppCompatActivity {
         editText.addTextChangedListener(mTextEditorWatcher);
     }
 
+    //called in xml file; when hit post, do this
     public void onSubmit(View view){
         Log.i("onSubmit", "****************** in onSubmit ******************");
 
-
+        Intent intent = getIntent();
         String mytweet = editText.getText().toString();
 
-        client.sendTweet(mytweet, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    Log.i("onSubmit", "****************** in try block of onSuccess after sentTweet ******************");
-                    Tweet tweet = Tweet.fromJSON(response);
+        if (intent.getBooleanExtra("", false)) {
 
-                    // Prepare data intent
-                    Intent data = new Intent();
-                    // Pass relevant data back as a result
-                    data.putExtra("etTweet", Parcels.wrap(tweet));
-                    // Activity finished ok, return the data
-                    setResult(RESULT_OK, data); // set result code and bundle data for response
-                    finish(); // closes the activity, pass data to parent
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            client.sendTweet(mytweet, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        Log.i("onSubmit", "****************** in try block of onSuccess after sentTweet ******************");
+                        Tweet tweet = Tweet.fromJSON(response);
+
+                        // Prepare data intent
+                        Intent data = new Intent();
+                        // Pass relevant data back as a result
+                        data.putExtra("etTweet", Parcels.wrap(tweet));
+                        // Activity finished ok, return the data
+                        setResult(RESULT_OK, data); // set result code and bundle data for response
+                        finish(); // closes the activity, pass data to parent
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                }
+            });
+
+        } else {
+            client.sendTweet(mytweet, intent.getLongExtra("uid", 0), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        Log.i("onSubmit", "****************** in try block of onSuccess after sentTweet ******************");
+                        Tweet tweet = Tweet.fromJSON(response);
+
+                        // Prepare data intent
+                        Intent data = new Intent();
+                        // Pass relevant data back as a result
+                        data.putExtra("etTweet", Parcels.wrap(tweet));
+                        // Activity finished ok, return the data
+                        setResult(RESULT_OK, data); // set result code and bundle data for response
+                        finish(); // closes the activity, pass data to parent
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                }
+            });
+        }
     }
 
     private final TextWatcher mTextEditorWatcher = new TextWatcher() {

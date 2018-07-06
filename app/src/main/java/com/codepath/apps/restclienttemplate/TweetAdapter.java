@@ -1,17 +1,22 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,11 +72,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     //create ViewHolder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public /*static*/ class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvTime;
+        public ImageButton ibComment;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,8 +87,46 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+            ibComment = (ImageButton) itemView.findViewById(R.id.ibComment);
+
+            ibComment.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Tweet replyTweet = mTweets.get(position);
+                    //create intent for new activity
+                    Intent intent;
+                    intent = new Intent(view.getContext(), ComposeActivity.class);
+                    intent.putExtra("reply", true);
+                    intent.putExtra("uid", replyTweet.uid);
+                    Activity TRActivity = (Activity) view.getContext();
+                    TRActivity.startActivityForResult(intent, 2);
+                }
+            });
+
+
+            itemView.setOnClickListener(this);
         }
-    }
+
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                //check if position is valid, aka actually exists in the view
+                if (position != RecyclerView.NO_POSITION) {
+                    //get movie at position if position exists
+                    Tweet tweet = mTweets.get(position);
+                    //create intent for new activity
+                    Intent intent = new Intent(context, TweetDetailsActivities.class);
+                    //do parceler stuff (honestly idek what this even means)
+                    intent.putExtra("tweet", Parcels.wrap(tweet));
+                    //show the activity
+                    context.startActivity(intent);
+                }
+            }
+        }
+
+
+
+
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public String getRelativeTimeAgo(String rawJsonDate) {
@@ -106,12 +150,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // Clean all elements of the recycler
     public void clear() {
         mTweets.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<Tweet> list) {
-        mTweets.addAll(list);
         notifyDataSetChanged();
     }
 }
