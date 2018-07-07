@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class TweetDetailsActivities extends AppCompatActivity {
+    TwitterClient client;
 
     private TextView tvUserName;
     private TextView tvTime;
@@ -19,6 +20,13 @@ public class TweetDetailsActivities extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activities_tweet_details);
 
+        client = TwitterApp.getRestClient(this);
 
+        tvUserName = findViewById(R.id.tvUserName);
+        tvTime = findViewById(R.id.tvTime);
+        tvBody = findViewById(R.id.tvBody);
+        ibComment = findViewById(R.id.ibComment);
+        ibLike = findViewById(R.id.ibLike);
+        ibRT = findViewById(R.id.ibRT);
     }
 }

@@ -58,6 +58,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvBody"
         android:layout_marginEnd="151dp"
+        android:onClick="onRetweet"
         android:src="@android:drawable/stat_notify_sync" />
 
     <ImageButton
